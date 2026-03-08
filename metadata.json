@@ -1,0 +1,5 @@
+{
+  "name": "RideGenie",
+  "description": "AI-powered ride-sharing app with Google Maps grounding.",
+  "requestFramePermissions": ["geolocation"]
+}
