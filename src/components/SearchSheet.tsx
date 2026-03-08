@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Search, ArrowLeft, MapPin, Sparkles, Loader2 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
 import { searchNearbyPlaces, Place } from '../services/ai';
 
 interface SearchSheetProps {
@@ -84,7 +84,7 @@ export function SearchSheet({ location, onClose, onSelect }: SearchSheetProps) {
               <div className="bg-blue-50 p-4 rounded-2xl flex items-start">
                 <Sparkles className="w-5 h-5 text-blue-500 mt-0.5 mr-3 flex-shrink-0" />
                 <div className="text-sm text-blue-900 leading-relaxed markdown-body">
-                  <ReactMarkdown>{results.text}</ReactMarkdown>
+                  <Markdown>{results.text}</Markdown>
                 </div>
               </div>
             )}

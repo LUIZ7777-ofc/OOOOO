@@ -1,6 +1,18 @@
 import { GoogleGenAI } from '@google/genai';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+let ai: GoogleGenAI | null = null;
+
+function getAI() {
+  if (!ai) {
+    const apiKey = process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      console.error("GEMINI_API_KEY is not set.");
+      // Fallback or throw error
+    }
+    ai = new GoogleGenAI({ apiKey: apiKey || 'MISSING_KEY' });
+  }
+  return ai;
+}
 
 export interface Place {
   title: string;
@@ -8,7 +20,8 @@ export interface Place {
 }
 
 export async function searchNearbyPlaces(query: string, lat: number, lng: number) {
-  const response = await ai.models.generateContent({
+  const aiInstance = getAI();
+  const response = await aiInstance.models.generateContent({
     model: 'gemini-2.5-flash',
     contents: `I am looking for "${query}". What are some good options nearby? Keep the response very brief and conversational.`,
     config: {
@@ -48,7 +61,8 @@ export async function searchNearbyPlaces(query: string, lat: number, lng: number
 }
 
 export async function estimateRide(destination: string) {
-  const response = await ai.models.generateContent({
+  const aiInstance = getAI();
+  const response = await aiInstance.models.generateContent({
     model: 'gemini-3-flash-preview',
     contents: `I am taking a ride to "${destination}". Generate 3 ride options (e.g., Standard, Comfort, Premium). For each, provide a price in USD (between $10 and $50) and an ETA in minutes (between 5 and 30). Return ONLY a JSON array of objects with keys: id, name, price, eta, description.`,
     config: {
